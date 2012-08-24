@@ -7,7 +7,7 @@
 #include <Foundation/Foundation.h>
 
 #define BEST_BYTE_ALIGNMENT 16
-#define COMPUTE_BEST_BYTES_PER_ROW(bpr)		( ( (bpr) + (BEST_BYTE_ALIGNMENT-1) ) & ~(BEST_BYTE_ALIGNMENT-1) )
+#define COMPUTE_BEST_BYTES_PER_ROW(bpr)     ( ( (bpr) + (BEST_BYTE_ALIGNMENT-1) ) & ~(BEST_BYTE_ALIGNMENT-1) )
 
 // Prototypes;
 CGPDFDocumentRef openPDFDocument (const char *filename);
@@ -19,84 +19,84 @@ void exportPageToPNG(CGContextRef context, CGPDFDocumentRef document, int pageNu
 
 int main(int argc, char *argv[])
 {
-	CGContextRef context;
-	CGPDFDocumentRef document;
-	size_t count;
-	float dpi;
-	char *pngPath;
-	size_t firstPage = 1;
-	size_t lastPage = 0;
+    CGContextRef context;
+    CGPDFDocumentRef document;
+    size_t count;
+    float dpi;
+    char *pngPath;
+    size_t firstPage = 1;
+    size_t lastPage = 0;
 
-	int i = 1;
-	for (; i < argc ; i++) {
-		char hyphen = argv[i][0];
-		char option = argv[i][1];
+    int i = 1;
+    for (; i < argc ; i++) {
+        char hyphen = argv[i][0];
+        char option = argv[i][1];
 
-		if (hyphen == '-')
-		{
-			if (option == 'r')
-			{
-				char cDPI[8];
-				int j = 2;
-				for (; j < strlen(argv[i]); j++)
-				{
-					cDPI[j-2] = argv[i][j];
-				}
-				
-				cDPI[j-2] = 0;
-				dpi = atof(cDPI);
-				NSLog(@"pdf2png : dpi = %f\n", dpi);
-			}
-			else if (option == 's')
-			{
-				if (argv[i][2] == 'O')
-				{
-					pngPath = &argv[i][13]; // hack!
-				
-					NSLog(@"pdf2png : pngPath = %s\n", pngPath);
-				}
-			}
-			else if (option == 'd')
-			{
-				if (argv[i][2] == 'F')
-				{
-					char *page = &argv[i][12];
-					firstPage = atoi(page);
-				} else if (argv[i][2] == 'L')
-				{
-					char *page = &argv[i][11];
-					lastPage = atoi(page);
-				}
-				
-//				NSLog(@"pdf2png : argv[%d] = %s\n", i, argv[i]);
-			}
-		}
-	}
+        if (hyphen == '-')
+        {
+            if (option == 'r')
+            {
+                char cDPI[8];
+                int j = 2;
+                for (; j < strlen(argv[i]); j++)
+                {
+                    cDPI[j-2] = argv[i][j];
+                }
+                
+                cDPI[j-2] = 0;
+                dpi = atof(cDPI);
+                NSLog(@"pdf2png : dpi = %f\n", dpi);
+            }
+            else if (option == 's')
+            {
+                if (argv[i][2] == 'O')
+                {
+                    pngPath = &argv[i][13]; // hack!
+                
+                    NSLog(@"pdf2png : pngPath = %s\n", pngPath);
+                }
+            }
+            else if (option == 'd')
+            {
+                if (argv[i][2] == 'F')
+                {
+                    char *page = &argv[i][12];
+                    firstPage = atoi(page);
+                } else if (argv[i][2] == 'L')
+                {
+                    char *page = &argv[i][11];
+                    lastPage = atoi(page);
+                }
+                
+//              NSLog(@"pdf2png : argv[%d] = %s\n", i, argv[i]);
+            }
+        }
+    }
 
-//	NSLog(@"pdf2pdf : opening %s\n", argv[argc-1]);
+//  NSLog(@"pdf2pdf : opening %s\n", argv[argc-1]);
 
 
-	document = openPDFDocument(argv[argc-1]);
+    document = openPDFDocument(argv[argc-1]);
     count = CGPDFDocumentGetNumberOfPages (document);// 3
     if (count == 0) {
         NSLog(@"the document needs at least one page!");
         return 1;
     }
-	if (lastPage == 0) lastPage = count;
+    if (lastPage == 0) lastPage = count;
 
-	context = createBitmapContextForPNG(document, dpi);
+    context = createBitmapContextForPNG(document, dpi);
 
-	NSLog(@"pdf2png : firstpage = %zu, lastpage = %zu\n", firstPage, lastPage);
-	
-	for (int i = firstPage; i <= lastPage; i++)
-	{
-		exportPageToPNG(context, document, i, dpi, pngPath);
-	}
+    NSLog(@"pdf2png : firstpage = %zu, lastpage = %zu\n", firstPage, lastPage);
+    
+    for (int i = firstPage; i <= lastPage; i++)
+    {
+        exportPageToPNG(context, document, i, dpi, pngPath);
+    }
 
-	releaseBitmapContext(context);
-	closePDFDocument(document);
-	
-	return 0;
+    releaseBitmapContext(context);
+    closePDFDocument(document);
+    
+    return 0;
 }
 
 CGPDFDocumentRef openPDFDocument (const char *filename)
@@ -107,7 +107,7 @@ CGPDFDocumentRef openPDFDocument (const char *filename)
 
     path = CFStringCreateWithCString (NULL, filename, kCFStringEncodingUTF8);
     url = CFURLCreateWithFileSystemPath (NULL, path, // 1
-										 kCFURLPOSIXPathStyle, 0);
+                                         kCFURLPOSIXPathStyle, 0);
     CFRelease (path);
     document = CGPDFDocumentCreateWithURL (url);// 2
     CFRelease(url);
@@ -116,7 +116,7 @@ CGPDFDocumentRef openPDFDocument (const char *filename)
 
 void closePDFDocument (CGPDFDocumentRef document)
 {
-//	CGPDFDocumentRelease(document);
+//  CGPDFDocumentRelease(document);
 }
 
 static CGColorSpaceRef myGetGenericRGBSpace(void)
@@ -124,7 +124,7 @@ static CGColorSpaceRef myGetGenericRGBSpace(void)
     // Only create the color space once.
     static CGColorSpaceRef colorSpace = NULL;
     if ( colorSpace == NULL ) {
-		colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
+        colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
     }
     return colorSpace;
 }
@@ -135,20 +135,20 @@ CGContextRef createBitmapContextForPNG(CGPDFDocumentRef document, float dpi)
     // image dimensions. Typically this size would be the minimum necessary to
     // capture the drawing of interest. We want 8 bits per component and for
     // RGBA data there are 4 components.
-//	float dpi = 75;
+//  float dpi = 75;
 //    size_t width = 8.5*dpi, height = 11*dpi, bitsPerComponent = 8,
 //    numComps = 4;
-//	size_t width = 7*dpi, height = 9.19*dpi, bitsPerComponent = 8, numComps = 4;
-	CGPDFPageRef page = CGPDFDocumentGetPage (document, 1);// 2
-	CGRect rect = CGPDFPageGetBoxRect( page, kCGPDFTrimBox);
-	
-//	size_t width = 5.8*dpi, height = 11*dpi, bitsPerComponent = 8,
-//	numComps = 4;
-	size_t width = rect.size.width / 72. * dpi;
-	size_t height = rect.size.height / 72. * dpi;
-	size_t bitsPerComponent = 8, numComps = 4;
-	NSLog(@"pdf2png : width = %zu, height = %zu\n", width, height);
-	
+//  size_t width = 7*dpi, height = 9.19*dpi, bitsPerComponent = 8, numComps = 4;
+    CGPDFPageRef page = CGPDFDocumentGetPage (document, 1);// 2
+    CGRect rect = CGPDFPageGetBoxRect( page, kCGPDFTrimBox);
+    
+//  size_t width = 5.8*dpi, height = 11*dpi, bitsPerComponent = 8,
+//  numComps = 4;
+    size_t width = rect.size.width / 72. * dpi;
+    size_t height = rect.size.height / 72. * dpi;
+    size_t bitsPerComponent = 8, numComps = 4;
+    NSLog(@"pdf2png : width = %zu, height = %zu\n", width, height);
+    
     // Compute the minimum number of bytes in a given scanline.
     size_t bytesPerRow = width* bitsPerComponent/8 * numComps;
 
@@ -166,20 +166,20 @@ CGContextRef createBitmapContextForPNG(CGPDFDocumentRef document, float dpi)
     // Create the bitmap context. Characterize the bitmap data with the
     // Generic RGB color space.
     CGContextRef bitmapContext = CGBitmapContextCreate(
-		data, width, height, bitsPerComponent, bytesPerRow,
-	    myGetGenericRGBSpace(), bitmapInfo);
+        data, width, height, bitsPerComponent, bytesPerRow,
+        myGetGenericRGBSpace(), bitmapInfo);
 
 
     // Scale the coordinate system so that 72 units are dpi pixels.
     CGContextScaleCTM( bitmapContext, dpi/72 , dpi/72 );
 
-	return bitmapContext;
+    return bitmapContext;
 }
 
 void releaseBitmapContext(CGContextRef context)
 {
     // Release the bitmap context object and free the associated raster memory.
-	char *data = CGBitmapContextGetData(context);
+    char *data = CGBitmapContextGetData(context);
     CGContextRelease(context);
     free(data);
 }
@@ -187,23 +187,23 @@ void releaseBitmapContext(CGContextRef context)
 CGImageRef createRGBAImageFromQuartzDrawing(CGContextRef context, CGPDFDocumentRef document, int pageNumber, float dpi)
 {
 // Perform the requested drawing.
-	
-	CGPDFPageRef page;
-	size_t width = CGBitmapContextGetWidth(context);
-	size_t height = CGBitmapContextGetHeight(context);
-	
+    
+    CGPDFPageRef page;
+    size_t width = CGBitmapContextGetWidth(context);
+    size_t height = CGBitmapContextGetHeight(context);
+    
     // Clear the destination bitmap so that it is completely transparent before
     // performing any drawing. This is appropriate for exporting PNG data or
     // other data formats that capture alpha data. If the destination output
     // format doesn't support alpha then a better choice would be to paint
     // to white.
-	CGContextSetFillColorWithColor( context, CGColorGetConstantColor(kCGColorWhite));
+    CGContextSetFillColorWithColor( context, CGColorGetConstantColor(kCGColorWhite));
 //    CGContextClearRect( context, CGRectMake(0, 0, width, height) );
-	CGContextFillRect( context, CGRectMake(0, 0, width, height) );
+    CGContextFillRect( context, CGRectMake(0, 0, width, height) );
 
-	page = CGPDFDocumentGetPage (document, pageNumber);// 2
+    page = CGPDFDocumentGetPage (document, pageNumber);// 2
     CGContextDrawPDFPage (context, page);// 3
-	CGPDFPageRelease(page);
+    CGPDFPageRelease(page);
 
     // Create a CGImage object from the drawing performed to the bitmapContext.
     CGImageRef image = CGBitmapContextCreateImage(context);
@@ -227,15 +227,15 @@ void exportPageToPNG(CGContextRef context, CGPDFDocumentRef document, int pageNu
     CFStringRef path;
     CFURLRef url;
 
-	char pngFile[256];
-	sprintf(pngFile, pngPath, pageNumber);
-//	NSLog(@"pdf2png : processing %s\n", pngFile);
-	
+    char pngFile[256];
+    sprintf(pngFile, pngPath, pageNumber);
+//  NSLog(@"pdf2png : processing %s\n", pngFile);
+    
     path = CFStringCreateWithCString (NULL, pngFile, kCFStringEncodingUTF8);
     url = CFURLCreateWithFileSystemPath (NULL, path, // 1
-										 kCFURLPOSIXPathStyle, 0);
+                                         kCFURLPOSIXPathStyle, 0);
 
-	imageDestination = CGImageDestinationCreateWithURL(url, kUTTypePNG, 1, NULL);
+    imageDestination = CGImageDestinationCreateWithURL(url, kUTTypePNG, 1, NULL);
 
     // Set the keys to be the x and y resolution properties of the image.
     keys[0] = kCGImagePropertyDPIWidth;
@@ -247,11 +247,11 @@ void exportPageToPNG(CGContextRef context, CGPDFDocumentRef document, int pageNu
 
     // Create an properties dictionary with these keys.
     properties = CFDictionaryCreate(NULL,
-									(const void **)keys,
-									(const void **)values,
-									2,
-									&kCFTypeDictionaryKeyCallBacks,
-									&kCFTypeDictionaryValueCallBacks);
+                                    (const void **)keys,
+                                    (const void **)values,
+                                    2,
+                                    &kCFTypeDictionaryKeyCallBacks,
+                                    &kCFTypeDictionaryValueCallBacks);
 
     // Release the CFNumber the code created.
     CFRelease(values[0]);
