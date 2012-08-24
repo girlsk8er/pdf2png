@@ -1,3 +1,8 @@
+/*
+  pdf2png for doc-view-mode on emacs
+
+*/
+
 
 #include <Foundation/Foundation.h>
 
